@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title data-i18n="title">גן הבוסתן - פורטל פעילויות הורים</title>
+  <style>
+    :root {
+      --primary-color: #4CAF50;
+      --primary-hover: #45a049;
+      --bg-color: #f4f7f6;
+      --card-bg: #ffffff;
+      --text-color: #333333;
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: var(--card-bg);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .lang-selector {
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+      background: white;
+      cursor: pointer;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+    .logo {
+      width: 45px;
+      height: 45px;
+      object-fit: contain;
+    }
+    main {
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: var(--primary-color);
+      text-align: center;
+      margin: 25px 0;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    .intro-text {
+      font-size: 15px;
+      line-height: 1.6;
+      text-align: center;
+      margin-bottom: 30px;
+      background: var(--card-bg);
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    @media (max-width: 400px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 15px;
+      padding: 25px 15px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid #f0f0f0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
+    .card-icon {
+      font-size: 45px;
+      margin-bottom: 12px;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+    
+    /* מודאל פופאפ */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .modal-overlay.active {
+      display: flex !important;
+    }
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 350px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .modal-content h2 {
+      margin-top: 0;
+      color: var(--primary-color);
+      font-size: 20px;
+    }
+    .modal-content ul {
+      padding-inline-start: 20px;
+      line-height: 1.8;
+      font-size: 15px;
+    }
+    
+    /* תצוגת מסך מלא לדף קשר */
+    .view-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--bg-color);
+      z-index: 9999;
+      overflow-y: auto;
+      padding: 15px;
+    }
+    .view-overlay.active {
+      display: block !important;
+    }
+    .view-content {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 15px;
+      width: 100%;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    .btn:hover {
+      background: var(--primary-hover);
+    }
+    
+    .table-responsive {
+      overflow-x: auto;
+      margin-top: 20px;
+      -webkit-overflow-scrolling: touch;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 500px;
+    }
+    th, td {
+      padding: 12px;
+      text-align: right;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    html[lang="ar"] th, html[lang="ar"] td {
+      text-align: right; 
+    }
+    th {
+      background-color: var(--primary-color);
+      color: white;
+      white-space: nowrap;
+    }
+    td a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <select id="langSwitch" class="lang-selector" onchange="changeLang(this.value)">
+      <option value="he">עברית</option>
+      <option value="ar">العربية</option>
+    </select>
+  </div>
+  <div class="logo-container">
+    <img src="https://wasns.org/wp-content/uploads/favicon.png" alt="לוגו נווה שלום" class="logo">
+  </div>
+</header>
+
+<main>
+  <h1 data-i18n="title">גן הבוסתן - פורטל פעילויות הורים</h1>
+  <div class="intro-text">
+    <span data-i18n="desc_part1">הפורטל מתוחזק על ידי ועד הורי הבוסתן, ומטרתו לרכז ולתקשר את כל פעילויות הורי הבוסתן עם הגן.</span>
+    <br><br>
+    <span data-i18n="desc_part2">הועד: מירי מזור מנאע, עומר שוורץ, איה ג׳בר, רוני שוסטר ובוראן אלשיחה.</span>
+  </div>
+
+  <div class="grid">
+    <!-- שונו למבנה אמין יותר לזיהוי קליקים בסלולר -->
+    <a class="card" href="#" onclick="openContactView(); return false;">
+      <div class="card-icon">📞</div>
+      <div class="card-title" data-i18n="card1">דף קשר ילדי והורי הבוסתן</div>
+    </a>
+    <a class="card" href="#" onclick="openToysModal(); return false;">
+      <div class="card-icon">🧸</div>
+      <div class="card-title" data-i18n="card2">קריאה לתרומת משחקים לגן</div>
+    </a>
+    <a class="card" href="https://docs.google.com/spreadsheets/d/1gh_scejKjfHFx14T00SlykMrR953C9PfIFs1CXGw_Nk/edit" target="_blank">
+      <div class="card-icon">🧥</div>
+      <div class="card-title" data-i18n="card3">הרשמה לקנייה מרוכזת לבגדי גשם לחצר הבוסתן</div>
+    </a>
+    <a class="card" href="https://docs.google.com/spreadsheets/d/1Rfqy1ZHDFtyXCVWh5V4a3dYsKgIP6DDJZuylK520ooY/edit" target="_blank">
+      <div class="card-icon">🧑‍🍳</div>
+      <div class="card-title" data-i18n="card4">הרשמה ל"שפים קטנים"</div>
+    </a>
+  </div>
+</main>
+
+<!-- Modal for Toys Donation -->
+<div class="modal-overlay" id="toysModal">
+  <div class="modal-content">
+    <h2 data-i18n="modal_toys_title">קריאה לתרומת משחקים לגן</h2>
+    <ul>
+      <li data-i18n="modal_toys_1">משחקי קופסא במצב טוב יחסית</li>
+      <li data-i18n="modal_toys_2">פאזלים</li>
+      <li data-i18n="modal_toys_3">תחפושות</li>
+      <li data-i18n="modal_toys_4">תיקים או אביזרי משחקי דמיון</li>
+      <li data-i18n="modal_toys_5">כלי משחק למטבח הילדים</li>
+      <li data-i18n="modal_toys_6">שולחן עגול ונמוך למטבח הקטנטנים</li>
+    </ul>
+    <button class="btn" onclick="closeToysModal()" data-i18n="close" style="margin-top:15px;">סגור</button>
+  </div>
+</div>
+
+<!-- Full Screen View for Contact List -->
+<div class="view-overlay" id="contactView">
+  <div class="view-content">
+    <button class="btn" onclick="closeContactView()" data-i18n="back" style="margin-bottom:20px; width:auto; padding:8px 20px;">חזרה לפורטל הראשי</button>
+    <h2 style="color: var(--primary-color); margin: 0 0 10px 0; text-align: center;" data-i18n="contact_title">דף קשר - גן הבוסתן</h2>
+    <div class="table-responsive">
+      <table id="contactTable">
+        <thead>
+          <tr>
+            <th data-i18n="th_child">שם הילד/ה</th>
+            <th data-i18n="th_family">משפחה</th>
+            <th data-i18n="th_dob">תאריך לידה</th>
+            <th data-i18n="th_city">יישוב</th>
+            <th data-i18n="th_parent">שם ההורה</th>
+            <th data-i18n="th_phone">טלפון</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- ימולא אוטומטית מקובץ הנתונים -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const dict = {
+  he: {
+    title: "גן הבוסתן - פורטל פעילויות הורים",
+    desc_part1: "הפורטל מתוחזק על ידי ועד הורי הבוסתן, ומטרתו לרכז ולתקשר את כל פעילויות הורי הבוסתן עם הגן.",
+    desc_part2: "הועד: מירי מזור מנאע, עומר שוורץ, איה ג׳בר, רוני שוסטר ובוראן אלשיחה.",
+    card1: "דף קשר ילדי והורי הבוסתן",
+    card2: "קריאה לתרומת משחקים לגן",
+    card3: "הרשמה לקנייה מרוכזת לבגדי גשם לחצר הבוסתן",
+    card4: "הרשמה ל\"שפים קטנים\"",
+    modal_toys_title: "קריאה לתרומת משחקים לגן",
+    modal_toys_1: "משחקי קופסא במצב טוב יחסית",
+    modal_toys_2: "פאזלים",
+    modal_toys_3: "תחפושות",
+    modal_toys_4: "תיקים או אביזרי משחקי דמיון",
+    modal_toys_5: "כלי משחק למטבח הילדים",
+    modal_toys_6: "שולחן עגול ונמוך למטבח הקטנטנים",
+    close: "סגור",
+    back: "חזרה לפורטל הראשי",
+    contact_title: "דף קשר - גן הבוסתן",
+    th_child: "שם הילד/ה",
+    th_family: "משפחה",
+    th_dob: "תאריך לידה",
+    th_city: "יישוב",
+    th_parent: "שם ההורה",
+    th_phone: "טלפון"
+  },
+  ar: {
+    title: "روضة البستان - بوابة أنشطة الأهالي",
+    desc_part1: "تتم إدارة البوابة من قبل لجنة أهالي البستان، وتهدف إلى تركيز وتوصيل جميع أنشطة أهالي البستان مع الروضة.",
+    desc_part2: "اللجنة: ميري مزور مناع، عومر شفارتس، آية جبر، روني شوستر وبوران الشيخة.",
+    card1: "قائمة اتصال أطفال وأهالي البستان",
+    card2: "نداء للتبرع بألعاب للروضة",
+    card3: "التسجيل لشراء جماعي لملابس المطر لساحة البستان",
+    card4: "التسجيل لـ \"طهاة صغار\"",
+    modal_toys_title: "نداء للتبرع بالألعاب",
+    modal_toys_1: "ألعاب لوحية بحالة جيدة نسبياً",
+    modal_toys_2: "ألغاز (بازل)",
+    modal_toys_3: "أزياء تنكرية",
+    modal_toys_4: "حقائب أو إكسسوارات لألعاب الخيال",
+    modal_toys_5: "أدوات لعب لمطبخ الأطفال",
+    modal_toys_6: "طاولة دائرية ومنخفضة لمطبخ الصغار",
+    close: "إغلاق",
+    back: "العودة للبوابة الرئيسية",
+    contact_title: "قائمة الاتصال - روضة البستان",
+    th_child: "اسم الطفل/ة",
+    th_family: "العائلة",
+    th_dob: "تاريخ الميلاد",
+    th_city: "البلدة",
+    th_parent: "اسم الوالد/ة",
+    th_phone: "هاتف"
+  }
+};
+
+const contactData = [
+  { child: "ג'ולאן", family: "אבו שחאדה", dob: "15/12/2022", city: "לוד", parent: "נרמין", phone: "054-6906668" },
+  { child: "מוחמד", family: "אבו שחאדה", dob: "12/05/2021", city: "לוד", parent: "נרמין", phone: "054-6906668" },
+  { child: "יוסף", family: "אזברקה", dob: "22/05/2022", city: "לוד", parent: "נור", phone: "050-9602028" },
+  { child: "לתין", family: "איבראהים", dob: "19/05/2023", city: "אבו גוש", parent: "ליאלי", phone: "053-2813853" },
+  { child: "אלין", family: "אלשיחה", dob: "03/06/2023", city: "לוד", parent: "בוראן", phone: "054-6125911" },
+  { child: "וותין", family: "בידס", dob: "01/07/2022", city: "לוד", parent: "מראם", phone: "054-7662861" },
+  { child: "זיינב", family: "ברהום", dob: "01/11/2021", city: "עין ראפה", parent: "פטימה", phone: "054-4972872" },
+  { child: "לית", family: "ברהום", dob: "03/06/2022", city: "עין ראפה", parent: "מנאר", phone: "054-6843265" },
+  { child: "מחמד", family: "ג'בר", dob: "08/04/2022", city: "אבו גוש", parent: "אוסמה", phone: "054-4571588" },
+  { child: "מיראל", family: "ג'בר", dob: "22/05/2023", city: "אבו גוש", parent: "בריהאן", phone: "058-4246554" },
+  { child: "מרים", family: "ג'בר", dob: "16/08/2021", city: "עין ראפה", parent: "איה", phone: "050-6413107" },
+  { child: "ליה", family: "ג'בר", dob: "20/05/2023", city: "אבו גוש", parent: "איה", phone: "052-5657927" },
+  { child: "יותם", family: "גבעון", dob: "09/05/2022", city: "נווה שלום", parent: "אלה", phone: "050-3363648" },
+  { child: "ניל", family: "גרה", dob: "13/11/2021", city: "נווה שלום", parent: "מאי", phone: "050-2724449" },
+  { child: "ליזה", family: "וייס", dob: "16/07/2021", city: "נווה שלום", parent: "תמה", phone: "054-5637928" },
+  { child: "יערה פנינה", family: "זוהר שמש", dob: "12/09/2021", city: "נווה שלום", parent: "תמר", phone: "054-6223622" },
+  { child: "נעמה שרה", family: "זוהר שמש", dob: "21/09/2023", city: "נווה שלום", parent: "תמר", phone: "054-6223622" },
+  { child: "נעמי", family: "זילברברג", dob: "30/01/2022", city: "נווה שלום", parent: "אלינור נחמה", phone: "050-6200268" },
+  { child: "עבדאללה", family: "חאג' יחיא", dob: "03/01/2021", city: "נווה שלום", parent: "לארין", phone: "054-6906668" },
+  { child: "רובי", family: "לויאן יפה", dob: "03/07/2023", city: "נווה שלום", parent: "אלינור", phone: "052-6880228" },
+  { child: "אלכס", family: "לורמן", dob: "09/04/2023", city: "נווה שלום", parent: "דיאנה", phone: "053-5295475" },
+  { child: "נינה", family: "מזור מנאע", dob: "31/12/2020", city: "נווה שלום", parent: "מירי", phone: "050-8640516" },
+  { child: "נטע", family: "מרק", dob: "23/01/2021", city: "נווה שלום", parent: "נריה", phone: "054-4442103" },
+  { child: "תלמה", family: "מרק", dob: "19/12/2023", city: "נווה שלום", parent: "נריה", phone: "054-4442103" },
+  { child: "ראתב", family: "סלמאן", dob: "06/11/2021", city: "עין נקובא", parent: "רוואן", phone: "058-7355788" },
+  { child: "נאי", family: "עבד אלקאדר", dob: "17/02/2021", city: "נווה שלום", parent: "היבא", phone: "054-5529577" },
+  { child: "וופא", family: "עג'מי", dob: "06/05/2022", city: "נווה שלום", parent: "נהריז", phone: "052-6428782" },
+  { child: "מג'ד", family: "עותמאן", dob: "03/07/2023", city: "אבו גוש", parent: "סברין", phone: "054-8846504" },
+  { child: "לובנה", family: "עליאן", dob: "05/06/2023", city: "אבו גוש", parent: "מרוה", phone: "052-3693525" },
+  { child: "זויה", family: "קרטה שוורץ", dob: "13/12/2022", city: "נווה שלום", parent: "גניה", phone: "054-7556429" },
+  { child: "ינאי", family: "קרטה שוורץ", dob: "13/03/2022", city: "נווה שלום", parent: "גניה", phone: "054-7556429" },
+  { child: "נור אלדין", family: "שוסטר", dob: "01/07/2023", city: "נווה שלום", parent: "רוני", phone: "050-7717577" },
+  { child: "שחר", family: "שרון", dob: "11/05/2022", city: "נווה שלום", parent: "ירדן", phone: "054-3477605" }
+];
+
+function populateTable() {
+  try {
+    const tbody = document.querySelector("#contactTable tbody");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+    contactData.forEach(row => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${row.child}</td>
+        <td>${row.family}</td>
+        <td>${row.dob}</td>
+        <td>${row.city}</td>
+        <td>${row.parent}</td>
+        <td dir="ltr" style="text-align: right;"><a href="tel:${row.phone.replace(/-/g,'')}">${row.phone}</a></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  } catch(e) {
+    console.error("Error loading table:", e);
+  }
+}
+
+function openContactView() {
+  document.getElementById('contactView').classList.add('active');
+  document.body.style.overflow = 'hidden'; 
+}
+
+function closeContactView() {
+  document.getElementById('contactView').classList.remove('active');
+  document.body.style.overflow = 'auto';
+}
+
+function openToysModal() {
+  document.getElementById('toysModal').classList.add('active');
+}
+
+function closeToysModal() {
+  document.getElementById('toysModal').classList.remove('active');
+}
+
+function changeLang(lang) {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[lang] && dict[lang][key]) {
+      if (el.tagName.toLowerCase() === 'span') {
+          el.innerHTML = dict[lang][key]; 
+      } else {
+          el.textContent = dict[lang][key];
+      }
+    }
+  });
+}
+
+// סגירת הפופאפ בלחיצה מחוץ לחלון הפנימי
+window.onclick = function(event) {
+  const toysModal = document.getElementById('toysModal');
+  if (event.target == toysModal) {
+    closeToysModal();
+  }
+}
+
+// הפעלת הפונקציה למילוי הטבלה רק לאחר טעינה מלאה של העמוד
+document.addEventListener('DOMContentLoaded', populateTable);
+</script>
+</body>
+</html>
