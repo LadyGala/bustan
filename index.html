@@ -130,38 +130,23 @@
       width: 100%;
       max-width: 350px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      text-align: center;
     }
     .modal-content h2 {
       margin-top: 0;
       color: var(--primary-color);
       font-size: 20px;
     }
-    .modal-content ul {
-      padding-inline-start: 20px;
+    .modal-content p, .modal-content ul {
       line-height: 1.8;
       font-size: 15px;
+      text-align: right;
     }
-    
-    /* תצוגת מסך מלא לדף קשר */
-    .view-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: var(--bg-color);
-      z-index: 9999;
-      overflow-y: auto;
-      padding: 15px;
+    .modal-content ul {
+      padding-inline-start: 20px;
     }
-    .view-overlay.active {
-      display: block !important;
-    }
-    .view-content {
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    html[lang="ar"] .modal-content p, html[lang="ar"] .modal-content ul {
+      text-align: right;
     }
     
     .btn {
@@ -175,39 +160,13 @@
       width: 100%;
       font-weight: bold;
       transition: background 0.2s;
+      display: inline-block;
+      text-decoration: none;
+      box-sizing: border-box;
+      margin-top: 15px;
     }
     .btn:hover {
       background: var(--primary-hover);
-    }
-    
-    .table-responsive {
-      overflow-x: auto;
-      margin-top: 20px;
-      -webkit-overflow-scrolling: touch;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 500px;
-    }
-    th, td {
-      padding: 12px;
-      text-align: right;
-      border-bottom: 1px solid #f0f0f0;
-      font-size: 14px;
-    }
-    html[lang="ar"] th, html[lang="ar"] td {
-      text-align: right; 
-    }
-    th {
-      background-color: var(--primary-color);
-      color: white;
-      white-space: nowrap;
-    }
-    td a {
-      color: var(--primary-color);
-      text-decoration: none;
-      font-weight: bold;
     }
   </style>
 </head>
@@ -234,22 +193,33 @@
   </div>
 
   <div class="grid">
-    <!-- שונו למבנה אמין יותר לזיהוי קליקים בסלולר -->
-    <a class="card" href="#" onclick="openContactView(); return false;">
+    <a class="card" href="https://docs.google.com/spreadsheets/d/1H9I0dK5gsxVMAW9SSQKudHPTkTVoB6xIXyy2a2ZnGpY/edit?usp=sharing" target="_blank">
       <div class="card-icon">📞</div>
       <div class="card-title" data-i18n="card1">דף קשר ילדי והורי הבוסתן</div>
     </a>
-    <a class="card" href="#" onclick="openToysModal(); return false;">
+    <a class="card" href="#" onclick="openModal('toysModal'); return false;">
       <div class="card-icon">🧸</div>
       <div class="card-title" data-i18n="card2">קריאה לתרומת משחקים לגן</div>
     </a>
-    <a class="card" href="https://docs.google.com/spreadsheets/d/1gh_scejKjfHFx14T00SlykMrR953C9PfIFs1CXGw_Nk/edit" target="_blank">
+    <a class="card" href="#" onclick="openModal('raincoatsModal'); return false;">
       <div class="card-icon">🧥</div>
       <div class="card-title" data-i18n="card3">הרשמה לקנייה מרוכזת לבגדי גשם לחצר הבוסתן</div>
     </a>
-    <a class="card" href="https://docs.google.com/spreadsheets/d/1Rfqy1ZHDFtyXCVWh5V4a3dYsKgIP6DDJZuylK520ooY/edit" target="_blank">
+    <a class="card" href="#" onclick="openModal('chefsModal'); return false;">
       <div class="card-icon">🧑‍🍳</div>
       <div class="card-title" data-i18n="card4">הרשמה ל"שפים קטנים"</div>
+    </a>
+    <a class="card" href="#" onclick="openModal('grandparentsModal'); return false;">
+      <div class="card-icon">👴👵</div>
+      <div class="card-title" data-i18n="card5">סבים מספרים</div>
+    </a>
+    <a class="card" href="https://drive.google.com/file/d/1WOpOn3X1fv3r8Xy6Mps7x64vmQ_tibSa/view?usp=sharing" target="_blank">
+      <div class="card-icon">📅</div>
+      <div class="card-title" data-i18n="card6">לוח חופשות</div>
+    </a>
+    <a class="card" href="#" onclick="openModal('careerModal'); return false;">
+      <div class="card-icon">💼</div>
+      <div class="card-title" data-i18n="card7">יום קריירה / תחביב</div>
     </a>
   </div>
 </main>
@@ -266,32 +236,47 @@
       <li data-i18n="modal_toys_5">כלי משחק למטבח הילדים</li>
       <li data-i18n="modal_toys_6">שולחן עגול ונמוך למטבח הקטנטנים</li>
     </ul>
-    <button class="btn" onclick="closeToysModal()" data-i18n="close" style="margin-top:15px;">סגור</button>
+    <button class="btn" onclick="closeModal('toysModal')" data-i18n="close">סגור</button>
   </div>
 </div>
 
-<!-- Full Screen View for Contact List -->
-<div class="view-overlay" id="contactView">
-  <div class="view-content">
-    <button class="btn" onclick="closeContactView()" data-i18n="back" style="margin-bottom:20px; width:auto; padding:8px 20px;">חזרה לפורטל הראשי</button>
-    <h2 style="color: var(--primary-color); margin: 0 0 10px 0; text-align: center;" data-i18n="contact_title">דף קשר - גן הבוסתן</h2>
-    <div class="table-responsive">
-      <table id="contactTable">
-        <thead>
-          <tr>
-            <th data-i18n="th_child">שם הילד/ה</th>
-            <th data-i18n="th_family">משפחה</th>
-            <th data-i18n="th_dob">תאריך לידה</th>
-            <th data-i18n="th_city">יישוב</th>
-            <th data-i18n="th_parent">שם ההורה</th>
-            <th data-i18n="th_phone">טלפון</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- ימולא אוטומטית מקובץ הנתונים -->
-        </tbody>
-      </table>
-    </div>
+<!-- Modal for Raincoats -->
+<div class="modal-overlay" id="raincoatsModal">
+  <div class="modal-content">
+    <h2 data-i18n="modal_raincoats_title">קנייה מרוכזת לבגדי גשם</h2>
+    <p data-i18n="modal_raincoats_desc">הועד בוחן דגמים ומחירים לקנייה מרוכזת ונעדכן בקרוב. אפשר להירשם גם בהמשך.</p>
+    <a href="https://docs.google.com/spreadsheets/d/1gh_scejKjfHFx14T00SlykMrR953C9PfIFs1CXGw_Nk/edit" target="_blank" class="btn" data-i18n="register_btn">הרשמה</a>
+    <button class="btn" onclick="closeModal('raincoatsModal')" data-i18n="close" style="background: #999;">סגור</button>
+  </div>
+</div>
+
+<!-- Modal for Chefs -->
+<div class="modal-overlay" id="chefsModal">
+  <div class="modal-content">
+    <h2 data-i18n="modal_chefs_title">שפים קטנים</h2>
+    <p data-i18n="modal_chefs_desc">אחת לשבועיים, חמישה ילדים (3 בוגרים ו2 -קטנטנים) יתנדבו להביא מצרכים ולהכין מהם בעצמם בגן ארוחת בוקר לכל ילדי הגן. ניתן להביא לחם/לחמניות/קרקרים/מאפים כבר אפויים, מצרכים להכנת ממרחים, ירקות לא חתוכים וכו'. מומלץ לשלוח עם הילדים כלים ייעודיים לילדים כגון סכין מותאם לקטנטנים (בגן יש כמה יחידות למי שאין).</p>
+    <a href="https://docs.google.com/spreadsheets/d/1Rfqy1ZHDFtyXCVWh5V4a3dYsKgIP6DDJZuylK520ooY/edit" target="_blank" class="btn" data-i18n="register_btn">הרשמה</a>
+    <button class="btn" onclick="closeModal('chefsModal')" data-i18n="close" style="background: #999;">סגור</button>
+  </div>
+</div>
+
+<!-- Modal for Grandparents -->
+<div class="modal-overlay" id="grandparentsModal">
+  <div class="modal-content">
+    <h2 data-i18n="modal_gp_title">סבים מספרים</h2>
+    <p data-i18n="modal_gp_desc">הגן ישמח לשמוע סיפורי ילדות אישיים או סיפורים או ספרים מהילדות של סבים וסבתות של ילדי הגן. מזמינים אתכם להירשם ובתיאום עם הגננות להגיע לגן לספר (חצי שעה-שעה).</p>
+    <a href="https://docs.google.com/spreadsheets/d/1FGYNnyMW4T9SE-4s9dmzHYlq3sMqd7OYLas2mIhCfpg/edit" target="_blank" class="btn" data-i18n="register_btn">הרשמה</a>
+    <button class="btn" onclick="closeModal('grandparentsModal')" data-i18n="close" style="background: #999;">סגור</button>
+  </div>
+</div>
+
+<!-- Modal for Career/Hobby -->
+<div class="modal-overlay" id="careerModal">
+  <div class="modal-content">
+    <h2 data-i18n="modal_career_title">יום קריירה / תחביב</h2>
+    <p data-i18n="modal_career_desc">הורה יבוא להציג ולספר על הקריירה או תחביב שלו לילדי הגן. ניתן להביא אביזרים או לעשות מצגת להצגה או פשוט לספר. יש לתאם עם הגננות זמנים מראש.</p>
+    <a href="https://docs.google.com/spreadsheets/d/1k9VXdiNG916Qo9d1tNP_DXznJdp7-cknhZk_1ZmXz-U/edit" target="_blank" class="btn" data-i18n="register_btn">הרשמה</a>
+    <button class="btn" onclick="closeModal('careerModal')" data-i18n="close" style="background: #999;">סגור</button>
   </div>
 </div>
 
@@ -305,6 +290,9 @@ const dict = {
     card2: "קריאה לתרומת משחקים לגן",
     card3: "הרשמה לקנייה מרוכזת לבגדי גשם לחצר הבוסתן",
     card4: "הרשמה ל\"שפים קטנים\"",
+    card5: "סבים מספרים",
+    card6: "לוח חופשות",
+    card7: "יום קריירה / תחביב",
     modal_toys_title: "קריאה לתרומת משחקים לגן",
     modal_toys_1: "משחקי קופסא במצב טוב יחסית",
     modal_toys_2: "פאזלים",
@@ -312,15 +300,16 @@ const dict = {
     modal_toys_4: "תיקים או אביזרי משחקי דמיון",
     modal_toys_5: "כלי משחק למטבח הילדים",
     modal_toys_6: "שולחן עגול ונמוך למטבח הקטנטנים",
-    close: "סגור",
-    back: "חזרה לפורטל הראשי",
-    contact_title: "דף קשר - גן הבוסתן",
-    th_child: "שם הילד/ה",
-    th_family: "משפחה",
-    th_dob: "תאריך לידה",
-    th_city: "יישוב",
-    th_parent: "שם ההורה",
-    th_phone: "טלפון"
+    modal_raincoats_title: "קנייה מרוכזת לבגדי גשם",
+    modal_raincoats_desc: "הועד בוחן דגמים ומחירים לקנייה מרוכזת ונעדכן בקרוב. אפשר להירשם גם בהמשך.",
+    modal_chefs_title: "שפים קטנים",
+    modal_chefs_desc: "אחת לשבועיים, חמישה ילדים (3 בוגרים ו2 -קטנטנים) יתנדבו להביא מצרכים ולהכין מהם בעצמם בגן ארוחת בוקר לכל ילדי הגן. ניתן להביא לחם/לחמניות/קרקרים/מאפים כבר אפויים, מצרכים להכנת ממרחים, ירקות לא חתוכים וכו'. מומלץ לשלוח עם הילדים כלים ייעודיים לילדים כגון סכין מותאם לקטנטנים (בגן יש כמה יחידות למי שאין).",
+    modal_gp_title: "סבים מספרים",
+    modal_gp_desc: "הגן ישמח לשמוע סיפורי ילדות אישיים או סיפורים או ספרים מהילדות של סבים וסבתות של ילדי הגן. מזמינים אתכם להירשם ובתיאום עם הגננות להגיע לגן לספר (חצי שעה-שעה).",
+    modal_career_title: "יום קריירה / תחביב",
+    modal_career_desc: "הורה יבוא להציג ולספר על הקריירה או תחביב שלו לילדי הגן. ניתן להביא אביזרים או לעשות מצגת להצגה או פשוט לספר. יש לתאם עם הגננות זמנים מראש.",
+    register_btn: "הרשמה",
+    close: "סגור"
   },
   ar: {
     title: "روضة البستان - بوابة أنشطة الأهالي",
@@ -330,6 +319,9 @@ const dict = {
     card2: "نداء للتبرع بألعاب للروضة",
     card3: "التسجيل لشراء جماعي لملابس المطر لساحة البستان",
     card4: "التسجيل لـ \"طهاة صغار\"",
+    card5: "الأجداد يروون",
+    card6: "جدول العطلات",
+    card7: "يوم مهنة / هواية",
     modal_toys_title: "نداء للتبرع بالألعاب",
     modal_toys_1: "ألعاب لوحية بحالة جيدة نسبياً",
     modal_toys_2: "ألغاز (بازل)",
@@ -337,92 +329,46 @@ const dict = {
     modal_toys_4: "حقائب أو إكسسوارات لألعاب الخيال",
     modal_toys_5: "أدوات لعب لمطبخ الأطفال",
     modal_toys_6: "طاولة دائرية ومنخفضة لمطبخ الصغار",
-    close: "إغلاق",
-    back: "العودة للبوابة الرئيسية",
-    contact_title: "قائمة الاتصال - روضة البستان",
-    th_child: "اسم الطفل/ة",
-    th_family: "العائلة",
-    th_dob: "تاريخ الميلاد",
-    th_city: "البلدة",
-    th_parent: "اسم الوالد/ة",
-    th_phone: "هاتف"
+    modal_raincoats_title: "شراء جماعي لملابس المطر",
+    modal_raincoats_desc: "تدرس اللجنة الموديلات والأسعار للشراء الجماعي وسنوافيكم بالتفاصيل قريباً. يمكنكم التسجيل لاحقاً أيضاً.",
+    modal_chefs_title: "طهاة صغار",
+    modal_chefs_desc: "مرة كل أسبوعين، يتطوع خمسة أطفال (3 كبار و 2 صغار) لإحضار المكونات وإعداد وجبة الإفطار بأنفسهم في الروضة لجميع الأطفال. يمكن إحضار خبز/لفائف/مقرمشات/مخبوزات جاهزة، مكونات لتحضير المدهونات، خضروات غير مقطعة وما إلى ذلك. يوصى بإرسال أدوات مخصصة للأطفال معهم مثل سكين مناسب للصغار (يوجد في الروضة بعض الوحدات لمن ليس لديه).",
+    modal_gp_title: "الأجداد يروون",
+    modal_gp_desc: "ستسعد الروضة بالاستماع إلى قصص الطفولة الشخصية أو القصص أو الكتب من طفولة أجداد وجدات أطفال الروضة. ندعوكم للتسجيل وبالتنسيق مع المعلمات للحضور إلى الروضة للرواية (نصف ساعة - ساعة).",
+    modal_career_title: "يوم مهنة / هواية",
+    modal_career_desc: "سيأتي أحد الوالدين لعرض والتحدث عن مهنته أو هوايته لأطفال الروضة. يمكن إحضار إكسسوارات أو عمل عرض تقديمي أو مجرد التحدث. يجب تنسيق الأوقات مع المعلمات مسبقاً.",
+    register_btn: "تسجيل",
+    close: "إغلاق"
   }
 };
 
-const contactData = [
-  { child: "ג'ולאן", family: "אבו שחאדה", dob: "15/12/2022", city: "לוד", parent: "נרמין", phone: "054-6906668" },
-  { child: "מוחמד", family: "אבו שחאדה", dob: "12/05/2021", city: "לוד", parent: "נרמין", phone: "054-6906668" },
-  { child: "יוסף", family: "אזברקה", dob: "22/05/2022", city: "לוד", parent: "נור", phone: "050-9602028" },
-  { child: "לתין", family: "איבראהים", dob: "19/05/2023", city: "אבו גוש", parent: "ליאלי", phone: "053-2813853" },
-  { child: "אלין", family: "אלשיחה", dob: "03/06/2023", city: "לוד", parent: "בוראן", phone: "054-6125911" },
-  { child: "וותין", family: "בידס", dob: "01/07/2022", city: "לוד", parent: "מראם", phone: "054-7662861" },
-  { child: "זיינב", family: "ברהום", dob: "01/11/2021", city: "עין ראפה", parent: "פטימה", phone: "054-4972872" },
-  { child: "לית", family: "ברהום", dob: "03/06/2022", city: "עין ראפה", parent: "מנאר", phone: "054-6843265" },
-  { child: "מחמד", family: "ג'בר", dob: "08/04/2022", city: "אבו גוש", parent: "אוסמה", phone: "054-4571588" },
-  { child: "מיראל", family: "ג'בר", dob: "22/05/2023", city: "אבו גוש", parent: "בריהאן", phone: "058-4246554" },
-  { child: "מרים", family: "ג'בר", dob: "16/08/2021", city: "עין ראפה", parent: "איה", phone: "050-6413107" },
-  { child: "ליה", family: "ג'בר", dob: "20/05/2023", city: "אבו גוש", parent: "איה", phone: "052-5657927" },
-  { child: "יותם", family: "גבעון", dob: "09/05/2022", city: "נווה שלום", parent: "אלה", phone: "050-3363648" },
-  { child: "ניל", family: "גרה", dob: "13/11/2021", city: "נווה שלום", parent: "מאי", phone: "050-2724449" },
-  { child: "ליזה", family: "וייס", dob: "16/07/2021", city: "נווה שלום", parent: "תמה", phone: "054-5637928" },
-  { child: "יערה פנינה", family: "זוהר שמש", dob: "12/09/2021", city: "נווה שלום", parent: "תמר", phone: "054-6223622" },
-  { child: "נעמה שרה", family: "זוהר שמש", dob: "21/09/2023", city: "נווה שלום", parent: "תמר", phone: "054-6223622" },
-  { child: "נעמי", family: "זילברברג", dob: "30/01/2022", city: "נווה שלום", parent: "אלינור נחמה", phone: "050-6200268" },
-  { child: "עבדאללה", family: "חאג' יחיא", dob: "03/01/2021", city: "נווה שלום", parent: "לארין", phone: "054-6906668" },
-  { child: "רובי", family: "לויאן יפה", dob: "03/07/2023", city: "נווה שלום", parent: "אלינור", phone: "052-6880228" },
-  { child: "אלכס", family: "לורמן", dob: "09/04/2023", city: "נווה שלום", parent: "דיאנה", phone: "053-5295475" },
-  { child: "נינה", family: "מזור מנאע", dob: "31/12/2020", city: "נווה שלום", parent: "מירי", phone: "050-8640516" },
-  { child: "נטע", family: "מרק", dob: "23/01/2021", city: "נווה שלום", parent: "נריה", phone: "054-4442103" },
-  { child: "תלמה", family: "מרק", dob: "19/12/2023", city: "נווה שלום", parent: "נריה", phone: "054-4442103" },
-  { child: "ראתב", family: "סלמאן", dob: "06/11/2021", city: "עין נקובא", parent: "רוואן", phone: "058-7355788" },
-  { child: "נאי", family: "עבד אלקאדר", dob: "17/02/2021", city: "נווה שלום", parent: "היבא", phone: "054-5529577" },
-  { child: "וופא", family: "עג'מי", dob: "06/05/2022", city: "נווה שלום", parent: "נהריז", phone: "052-6428782" },
-  { child: "מג'ד", family: "עותמאן", dob: "03/07/2023", city: "אבו גוש", parent: "סברין", phone: "054-8846504" },
-  { child: "לובנה", family: "עליאן", dob: "05/06/2023", city: "אבו גוש", parent: "מרוה", phone: "052-3693525" },
-  { child: "זויה", family: "קרטה שוורץ", dob: "13/12/2022", city: "נווה שלום", parent: "גניה", phone: "054-7556429" },
-  { child: "ינאי", family: "קרטה שוורץ", dob: "13/03/2022", city: "נווה שלום", parent: "גניה", phone: "054-7556429" },
-  { child: "נור אלדין", family: "שוסטר", dob: "01/07/2023", city: "נווה שלום", parent: "רוני", phone: "050-7717577" },
-  { child: "שחר", family: "שרון", dob: "11/05/2022", city: "נווה שלום", parent: "ירדן", phone: "054-3477605" }
-];
+let activeModalId = null;
 
-function populateTable() {
-  try {
-    const tbody = document.querySelector("#contactTable tbody");
-    if (!tbody) return;
-    tbody.innerHTML = "";
-    contactData.forEach(row => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${row.child}</td>
-        <td>${row.family}</td>
-        <td>${row.dob}</td>
-        <td>${row.city}</td>
-        <td>${row.parent}</td>
-        <td dir="ltr" style="text-align: right;"><a href="tel:${row.phone.replace(/-/g,'')}">${row.phone}</a></td>
-      `;
-      tbody.appendChild(tr);
-    });
-  } catch(e) {
-    console.error("Error loading table:", e);
+function openModal(id) {
+  document.getElementById(id).classList.add('active');
+  activeModalId = id;
+  history.pushState({ modalOpen: true }, '', '');
+}
+
+function closeModal(id) {
+  const modalId = id || activeModalId;
+  if (modalId) {
+    document.getElementById(modalId).classList.remove('active');
+    activeModalId = null;
   }
 }
 
-function openContactView() {
-  document.getElementById('contactView').classList.add('active');
-  document.body.style.overflow = 'hidden'; 
-}
+window.addEventListener('popstate', function() {
+  if (activeModalId) {
+    closeModal();
+  }
+});
 
-function closeContactView() {
-  document.getElementById('contactView').classList.remove('active');
-  document.body.style.overflow = 'auto';
-}
-
-function openToysModal() {
-  document.getElementById('toysModal').classList.add('active');
-}
-
-function closeToysModal() {
-  document.getElementById('toysModal').classList.remove('active');
+window.onclick = function(event) {
+  if (event.target.classList.contains('modal-overlay')) {
+    closeModal();
+    history.back(); 
+  }
 }
 
 function changeLang(lang) {
@@ -438,17 +384,6 @@ function changeLang(lang) {
     }
   });
 }
-
-// סגירת הפופאפ בלחיצה מחוץ לחלון הפנימי
-window.onclick = function(event) {
-  const toysModal = document.getElementById('toysModal');
-  if (event.target == toysModal) {
-    closeToysModal();
-  }
-}
-
-// הפעלת הפונקציה למילוי הטבלה רק לאחר טעינה מלאה של העמוד
-document.addEventListener('DOMContentLoaded', populateTable);
 </script>
 </body>
 </html>
